@@ -1,0 +1,24 @@
+#!/bin/bash -eu
+
+# Dockerイメージのビルド
+docker build -t $APPLICATION_NAME:latest .
+
+# GCRの完全なイメージ名を構成
+GOOGLE_CLOUD_REGISTRY=gcr.io/$PROJECT_ID/$APPLICATION_NAME:latest
+
+# イメージをGCR用にタグ付け
+docker tag $APPLICATION_NAME:latest $GOOGLE_CLOUD_REGISTRY
+
+# GCRにプッシュ
+docker push $GOOGLE_CLOUD_REGISTRY
+
+# Cloud Runにデプロイ
+gcloud run deploy $APPLICATION_NAME \
+  --image $GOOGLE_CLOUD_REGISTRY \
+  --region $REGION \
+  --platform managed \
+  --update-env-vars DATABASE_NAME=$DATABASE_NAME,DATABASE_USER=$DATABASE_USER,DATABASE_PASSWORD=$DATABASE_PASSWORD,DATABASE_HOST=$DATABASE_HOST,DATABASE_PORT=$DATABASE_PORT
+
+# スクリプトの終了メッセージ
+echo "Deployment complete: $APPLICATION_NAME"
+
