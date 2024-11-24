@@ -14,5 +14,5 @@ COPY ./server ./
 EXPOSE 8080
 
 # Command to run the application
-CMD ["go", "run", "main.go"]
+CMD ["go", "run", "."]
 

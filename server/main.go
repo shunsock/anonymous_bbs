@@ -1,20 +1,31 @@
 package main
 
 import (
-	"net/http"
+	"database/sql"
 	"github.com/labstack/echo/v4"
+	_ "github.com/lib/pq"
+	"log"
+	"net/http"
 )
 
 func main() {
-	// Echoインスタンスを作成
+	// Connect to the database
+	db, err := sql.Open("postgres", "postgres://root:password@postgres_db:5432/bbs?sslmode=disable")
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	defer db.Close()
+
+	// Create Echo instance
 	e := echo.New()
 
-	// ルートエンドポイントを定義
+	// Routes
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, Echo!")
 	})
+	e.GET("/threads", GetThreadsHandler(db))
+	e.POST("/threads", CreateThreadHandler(db))
 
-	// サーバーを起動
+	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
 }
-
