@@ -1,4 +1,4 @@
-gREATE TABLE bbs_threads (
+CREATE TABLE bbs_threads (
     thread_id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL DEFAULT '風吹けば名無しさん',
