@@ -1,0 +1,132 @@
+openapi: 3.0.3
+info:
+  title: BBS Threads and Comments API
+  version: 1.0.0
+paths:
+  /threads:
+    get:
+      summary: Get all threads
+      responses:
+        200:
+          description: A list of threads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Thread'
+    post:
+      summary: Create a new thread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewThread'
+      responses:
+        201:
+          description: Thread created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Thread'
+  /comments:
+    post:
+      summary: Create a new comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComment'
+      responses:
+        201:
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+  /threads/{thread_id}/comments:
+    get:
+      summary: Get comments for a specific thread
+      parameters:
+        - name: thread_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A list of comments for the thread
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        404:
+          description: Thread not found
+components:
+  schemas:
+    Thread:
+      type: object
+      properties:
+        thread_id:
+          type: integer
+        title:
+          type: string
+        username:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    NewThread:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+        username:
+          type: string
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        comment:
+          type: string
+        commenter_ip_address:
+          type: string
+          format: ipv4
+        thread_id:
+          type: integer
+        username:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    NewComment:
+      type: object
+      required:
+        - comment
+        - commenter_ip_address
+        - thread_id
+        - username
+      properties:
+        comment:
+          type: string
+        commenter_ip_address:
+          type: string
+          format: ipv4
+        thread_id:
+          type: integer
+        username:
+          type: string
+
