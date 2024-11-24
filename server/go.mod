@@ -5,6 +5,7 @@ go 1.22.8
 require (
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/lib/pq v1.10.9
+	github.com/sashabaranov/go-openai v1.35.7
 )
 
 require (
