@@ -104,8 +104,6 @@ components:
           format: ipv4
         thread_id:
           type: integer
-        username:
-          type: string
         created_at:
           type: string
           format: date-time
@@ -118,7 +116,6 @@ components:
         - comment
         - commenter_ip_address
         - thread_id
-        - username
       properties:
         comment:
           type: string
@@ -127,6 +124,4 @@ components:
           format: ipv4
         thread_id:
           type: integer
-        username:
-          type: string
 

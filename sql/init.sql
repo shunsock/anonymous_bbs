@@ -1,3 +1,7 @@
+CREATE DATABASE bbs;
+
+\c bbs
+
 CREATE TABLE bbs_threads (
     thread_id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
