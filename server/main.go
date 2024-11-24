@@ -25,6 +25,7 @@ func main() {
 	})
 	e.GET("/threads", GetThreadsHandler(db))
 	e.POST("/threads", CreateThreadHandler(db))
+	e.POST("/comments", CreateCommentHandler(db))
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
