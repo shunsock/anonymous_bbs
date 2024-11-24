@@ -6,11 +6,15 @@ import (
 	_ "github.com/lib/pq"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
+	// read the environment variables
+	url := os.Getenv("DATABASE_URL")
+	log.Println("DATABASE_URL: ", url)
 	// Connect to the database
-	db, err := sql.Open("postgres", "postgres://root:password@postgres_db:5432/bbs?sslmode=disable")
+	db, err := sql.Open("postgres", url)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
