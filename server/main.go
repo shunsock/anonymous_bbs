@@ -23,6 +23,7 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, Echo!")
 	})
+	e.GET("/threads", GetThreadsHandler(db))
 	e.POST("/threads", CreateThreadHandler(db))
 
 	// Start server
