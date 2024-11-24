@@ -1,39 +1,34 @@
 services:
   app:
-    image: golang:1.20
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     container_name: go_app
-    working_dir: /app
     volumes:
-      - .:/app
+      - ./server:/server  # サーバーディレクトリをマウント
     ports:
       - "8080:8080"
     environment:
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_HOST=${DATABASE_HOST}
-      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_HOST=postgres_db  # ホスト名はコンテナ名に統一
+      - DATABASE_PORT=5432         # Postgresのデフォルトポート
     depends_on:
       - db
-    command: >
-      sh -c "until pg_isready -h ${DATABASE_HOST} -p ${DATABASE_PORT}; do
-      echo 'Waiting for database to be ready...';
-      sleep 2;
-      done;
-      go run main.go"
 
   db:
     image: postgres:15
     container_name: postgres_db
     ports:
-      - "${DATABASE_PORT}:5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - ./docker/postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/postgres_data/db:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   postgres_data:

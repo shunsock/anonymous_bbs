@@ -1,4 +1,4 @@
-FROM golang:1.20
+FROM golang:1.23
 
 # Set working directory
 WORKDIR /server
@@ -10,7 +10,9 @@ RUN go mod download
 # Copy application code
 COPY ./server ./
 
-# Expose port and set default command
+# Expose port
 EXPOSE 8080
+
+# Command to run the application
 CMD ["go", "run", "main.go"]
 
